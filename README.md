@@ -13,27 +13,102 @@ Kongres Bahasa Indonesia merupakan salah satu acara terkemuka dalam bidang kebah
 
 Dengan itu, kami ingin membuat aplikasi web yang mengembangkan konsep dasar katalog buku di Django dengan menerapkan model berbasis class. Selain itu, kami ingin memasukkan setidaknya 100 data buku ke dalam basis data Django dari dataset katalog buku yang bervariasi. Sumber dataset ini dapat diperoleh dari berbagai sumber terpercaya seperti Project Gutenberg, Google Books API, Kaggle, atau Data Skripsi LONTAR. Dengan pendekatan ini, kami akan memiliki sistem yang memungkinkan penyimpanan, pengelolaan, dan penampilan informasi buku dengan baik di aplikasi Django yang kami kembangkan. 
 
-Berikut, juga terdapat latar belakang dari pembuatan aplikasi katalog buku untuk Kongres Bahasa Indonesia XII yang berlangsung pada tanggal 25—28 Oktober 2023 dengan tema "Literasi dalam Kebinekaan untuk Kemajuan Bangsa":
-- Perkembangan Literasi dalam Konteks Kebinekaan: Kongres Bahasa Indonesia XII mengambil tema "Literasi dalam Kebinekaan untuk Kemajuan Bangsa" untuk menggali peran literasi dalam memajukan bangsa Indonesia. Literasi menjadi kunci dalam menjaga kebinekaan dan memperkuat identitas budaya Indonesia. Oleh karena itu, penting untuk memiliki sumber informasi yang berkualitas terkait dengan literasi dan kebinekaan.
-- Peningkatan Akses Informasi: Dalam era digital, akses terhadap informasi sangat penting. Aplikasi katalog buku akan memungkinkan peserta Kongres Bahasa Indonesia XII dan masyarakat umum untuk dengan mudah menemukan buku-buku yang relevan dengan tema kongres ini. Ini akan membantu dalam penyebaran pengetahuan dan pemahaman yang lebih baik tentang literasi dan kebinekaan.
-- Memfasilitasi Penelitian dan Diskusi: Kongres Bahasa Indonesia XII akan menjadi ajang penting bagi para akademisi, peneliti, dan penggiat bahasa dan sastra. Aplikasi katalog buku akan memberikan akses cepat ke sumber-sumber literatur yang dapat digunakan sebagai referensi dalam penelitian dan diskusi di acara kongres.
-- Mendukung Tujuan Kongres: Kongres Bahasa Indonesia bertujuan untuk memajukan bidang kebahasaan dan kesastraan di Indonesia. Dengan menyediakan aplikasi katalog buku, kita dapat mendukung pencapaian tujuan kongres ini dengan memberikan akses yang lebih baik ke sumber-sumber literatur yang relevan.
-- Inovasi Teknologi dalam Pendidikan dan Kebudayaan: Penggunaan teknologi dalam mendukung acara-acara kebudayaan seperti Kongres Bahasa Indonesia merupakan langkah positif dalam meningkatkan efisiensi dan dampak. Aplikasi katalog buku adalah salah satu bentuk inovasi teknologi yang dapat membantu mencapai tujuan kongres dengan lebih baik.
-Dengan latar belakang ini, pembuatan aplikasi katalog buku untuk Kongres Bahasa Indonesia XII menjadi penting dalam mendukung kesuksesan acara dan memfasilitasi akses informasi yang lebih baik terkait dengan tema kongres ini. Aplikasi ini akan menjadi alat yang bermanfaat bagi semua peserta kongres dan pihak yang tertarik dalam isu literasi dan kebinekaan di Indonesia.
+Aplikasi web yang ingin kami kembangkan bernama Bookly. Bookly adalah aplikasi yang menghadirkan pengalaman berbagi sesama pecinta buku. Pengguna dapat membuat profil pribadi, memberikan review, dan memberikan peringkat buku yang telah mereka baca. Pengguna dapat membentuk komunitas membaca, berpartisipasi dalam diskusi buku, dan mengikuti teman-teman mereka untuk memperluas jaringan literasi mereka. Bookly memiliki antarmuka yang intuitif dan ramah pengguna. Aplikasi ini mendorong minat literasi dan membantu pengguna menjelajahi dunia literatur dengan lebih mudah dan menyenangkan.
 
 ## Daftar Modul yang Akan Diimplementasikan
-**CREATE/UPDATE:**
-- Farrel Ayman Abisatyo
-- Cyrilus Yodha
-- Humam Al Labib <br>
+1. Auth (login n register), Show review, Search: kelompok
+2. Profile: Cyrilus Yodha
+3. Add review: Farrel Ayman
+4. Edit/delete review: Raquel Nayyara
+5. Add book: Human al Labib
+6. Edit/delete book: Arju Naja
 
-**READ:**
-- Arju Naja
-- Raquel Nayyara
+<table>
+  <tr>
+    <th>
+      Modul
+    </th>
+    <th>
+      Penjelasan
+    </th>
+  </tr>
+  <tr>
+    <td>
+      Register
+    </td>
+    <td>
+      Mendaftarkan user baru ke web.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Login
+    </td>
+    <td>
+      Login ke web sesuai user yang telah diregister
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Search
+    </td>
+    <td>
+    Bisa search buku berdasarkan judul
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Show review
+    </td>
+    <td>
+      Menampilkan output berupa kumpulan review buku dari buku yang dipilih di halaman search
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Profile (UR)
+    </td>
+    <td>
+      Tab / Page baru yang dapat diaskes oleh member untuk melihat informasi mengenai pengguna serta melihat review yang telah diberikan olehnya.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Add review (CR)
+    </td>
+    <td>
+      Member dapat memberi review mengenai buku yang dipilih.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Edit/delete review (UR)
+    </td>
+    <td>
+      Mengubah dan menghapus review yang telah diberikan user untuk suatu buku
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Add book (CR)
+    </td>
+    <td>
+      Memasukkan buku baru ke dalam dataset dan memastikan tidak memasukkan buku yang sudah ada.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Edit/delete book (UR)
+    </td>
+    <td>
+      Mengubah dan menghapus informasi mengenai suatu buku yang telah diberikan user untuk suatu buku
+    </td>
+  </tr>
+</table>
 
 ## Sumber Dataset Katalog Buku
 - https://drive.google.com/file/d/17jiAwHx_68zUrolbTl75IoLRFK_JLYrx/view
 - https://univindonesia-my.sharepoint.com/:x:/g/personal/iisafriyanti_office_ui_ac_id/EY1Lmwm40rJLhtbWtKerNOYBI3BxiLSlDbLuL3mFIsw8wA?rtime=0DhkUsXI20g
 
 ## Role atau Peran Pengguna Beserta Deskripsinya
-Dalam aplikasi web kami, pengguna yang berinteraksi akan memiliki peran sebagai pengamat katalog buku yang kami sediakan. Para pengguna dapat menggunakana beberapa fitur yang disediakan oleh aplikasi web kami, seperti search book by title, author, serta beberapa fitur filter sort yang dapat mempermudah pengalaman pencarian buku para pengguna.
+Dalam aplikasi web kami, pengguna yang berinteraksi akan memiliki peran sebagai pengamat katalog buku yang kami sediakan. Para pengguna juga dapat menggunakan beberapa fitur yang disediakan oleh aplikasi web kami, seperti search book by title, add review, edit review, dan delete review. Selain itu, pengguna juga dapat menambahkan, mengubah, dan menghapus buku dalam dataset.
