@@ -5,9 +5,9 @@ from book.models import Book
 # Create your models here.
 
 class Review(models.Model):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True)
-    # name = models.CharField(max_length=255)
     date_added = models.DateField(auto_now_add=True)
     rating = models.FloatField()
     reviews = models.TextField()
+
