@@ -49,7 +49,7 @@ def add_review(request, book_id):
 def get_review_json(request, book_id):
     book = Book.objects.get(pk=book_id)
     product_item = Review.objects.filter(book=book)
-    return HttpResponse(serializers.serialize('json', product_item))
+    return HttpResponse(serializers.serialize('json', product_item, use_natural_foreign_keys=True, use_natural_primary_keys=True))
 
 
 @csrf_exempt
