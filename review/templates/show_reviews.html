@@ -21,24 +21,6 @@
 {% endblock meta %}
 
 {% block content %}
-<body style="padding: 20px;">
-<!--<div class="d-flex grid gap-4 flex-wrap m-4" id="product_cards">-->
-<!--    {% for review in reviews %}-->
-<!--    <div class="card" style="width: 19rem;">-->
-<!--        <div class="card-body">-->
-<!--            <h5 class="card-title" >{{ review.rating }}</h5>-->
-<!--            <h6 class="card-subtitle mb-2 text-body-secondary">{{ review.reviews }}</h6>-->
-<!--&lt;!&ndash;            <ul>&ndash;&gt;-->
-<!--&lt;!&ndash;                <li>Genre: {{ book.genre }}</li>&ndash;&gt;-->
-<!--&lt;!&ndash;                <li>Rating: {{ book.rating }}</li>&ndash;&gt;-->
-<!--&lt;!&ndash;                <li>Price: ${{ book.price }}</li>&ndash;&gt;-->
-<!--&lt;!&ndash;            </ul>&ndash;&gt;-->
-<!--&lt;!&ndash;            <a href="#" class="btn btn-primary me-3">Review</a>&ndash;&gt;-->
-
-<!--        </div>-->
-<!--    </div>-->
-<!--    {% endfor %}-->
-<!--</div>-->
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -96,11 +78,13 @@
             <div class="row">
             <div class="col-sm-6 mb-3 mb-sm-0">
             <div class="card">
-                <div class="card-header"style="font-size: 35px"> Rating: ${item.fields.rating}</div>
+                <div class="card-header"style="font-size: 20px"> Rating: ${item.fields.rating}</div>
                 <div class="card-body">
-<!--                <h5 class="card-title" style="font-size: 35px">${item.fields.rating}</h5>-->
-                <p class="card-text" style="font-size: 45px"> ${item.fields.reviews}</p>
+<!--                <h5 class="card-title" style="font-size: 20px">${item.fields.rating}</h5>-->
+                <p class= "card-subtitle mb-2 text-body-secondary"> ${item.fields.reviews}</p>
+                <p class="card-text" style="font-size: 10px">- ${item.fields.user.username}</p>
                 <p class="card-text" style="font-size: 10px">Date Added: ${item.fields.date_added}</p>
+
 <!--                <a><button onclick="deleteItem(${item.pk})" class="btn btn-light" type="submit">Delete</button></a>-->
 <!--                <a><button onclick="incItem(${item.pk})" class="btn btn-light" type="submit">+</button></a>-->
 <!--                <a><button onclick="decItem(${item.pk})" class="btn btn-light" type="submit">-</button></a>-->
