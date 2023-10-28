@@ -69,7 +69,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#" >
+                                <a class="nav-link" href="{% url 'users:logout' %}">
                                     Logout
                                 </a>
                             </li>
@@ -90,7 +90,7 @@
                                     <li>Rating: {{ book.rating }}</li>
                                     <li>Price: ${{ book.price }}</li>
                                 </ul>
-                            <a href="{% url 'review:add_review' book.pk %}" class="btn btn-primary me-3">Review</a>
+                            <a href="{% url 'review:show_reviews' book.pk %}" class="btn btn-primary me-3">Review</a>
                             <button id="BookmarkButton" class="rounded bookmark-button">
                                 <i class="bi bi-bookmark-fill" style="color: whitesmoke;"></i>
                                 Bookmark
