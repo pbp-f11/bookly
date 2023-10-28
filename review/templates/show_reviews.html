@@ -50,13 +50,12 @@
     </div>
 </div>
 <div class="container">
-    <div class="row" id="item_cards"></div>
-</div>
-
-<div class="container">
     <div class="row mt-5 justify-content-center">
-        <button type="button" style="font-size: 25px" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Review by AJAX</button>
+        <button type="button" style="font-size: 15px; margin-bottom: 40px; width: 200px" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Review by AJAX</button>
     </div>
+</div>
+<div class="container">
+    <div class="row " id="item_cards"></div>
 </div>
 
 </body>
@@ -75,14 +74,14 @@
             card.classList.add( "mb-4");
 
             card.innerHTML =`
-            <div class="row">
+            <div class="row justify-content-center">
             <div class="col-sm-6 mb-3 mb-sm-0">
             <div class="card">
                 <div class="card-header"style="font-size: 20px"> Rating: ${item.fields.rating}</div>
                 <div class="card-body">
 <!--                <h5 class="card-title" style="font-size: 20px">${item.fields.rating}</h5>-->
                 <p class= "card-subtitle mb-2 text-body-secondary"> ${item.fields.reviews}</p>
-                <p class="card-text" style="font-size: 10px">- ${item.fields.user.username}</p>
+                <p class="card-text" style="font-size: 10px">- ${item.fields.user}</p>
                 <p class="card-text" style="font-size: 10px">Date Added: ${item.fields.date_added}</p>
 
 <!--                <a><button onclick="deleteItem(${item.pk})" class="btn btn-light" type="submit">Delete</button></a>-->
