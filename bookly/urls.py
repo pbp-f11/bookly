@@ -23,4 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("main.urls")),
     path('api/books/', include("book.urls")),
+    path('edit_book/', include("edit_delete_book.urls")),
 ]

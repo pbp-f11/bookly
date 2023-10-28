@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="book-profile">
+                <h1>{{ book.name }}</h1>
+                <br><br>
+                <p><strong>Penulis:</strong> {{ book.author }}</p>
+                <p><strong>Rating:</strong> {{ book.rating }}</p>
+                <p><strong>Ulasan:</strong> {{ book.reviews }}</p>
+                <p><strong>Harga:</strong> ${{ book.price }}</p>
+                <p><strong>Tahun terbit:</strong> {{ book.year }}</p>
+                <p><strong>Genre:</strong> {{ book.genre }}</p>
+            </div>
+        </div>
+    </div> 
+</div>
+
+
+<style>
+    .book-profile {
+        background-color: #f8f8f8;
+        border: 1px solid #ddd;
+        padding: 20px;
+        margin: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .book-profile h1 {
+        font-size: 24px;
+        color: #333;
+    }
+
+    .book-profile p {
+        font-size: 16px;
+        color: #666;
+    }
+
+    /* Style untuk tombol Edit */
+    .edit-button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}

@@ -4,18 +4,25 @@ from edit_delete_book.forms import BookForm
 from django.urls import reverse
 from book.models import Book
 
-def edit_book(request, book_id):
-    book = Book.objects.get(id=book_id)
-    if request.method == 'POST':
-        form = BookForm(request.POST, instance=book)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('book:book_list'))
-    else:
-        form = BookForm(instance=book)
-    return render(request, 'edit_delete_book/edit_book.html', {'form': form})
+def show(request, book_id):
+    book = Book.objects.get(pk=book_id)
+    forms = BookForm(request.POST or None, instance=book)
+    if forms.is_valid() and request.method == 'POST':
+        forms.save()
+        return HttpResponseRedirect(reverse('edit_delete_book:show', args=(book_id,)))
+    context = {
+        'book': book,
+        'forms': forms,
+    }
+    return render(request, 'show.html', context)
 
-def delete_book(request, book_id):
-    book = Book.objects.get(id=book_id)
-    book.delete()
-    return HttpResponseRedirect(reverse('book:book_list'))
+def edit_book(request, book_id):
+    book = Book.objects.get(pk=book_id)
+    forms = BookForm(request.POST or None, instance=book)
+    if forms.is_valid() and request.method == 'POST':
+        forms.save()
+        return HttpResponseRedirect(reverse('edit_delete_book:show', args=(book_id,)))
+    context = {
+        'forms': forms,
+    }
+    return render(request, 'edit_book.html', context)
