@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from edit_delete_book.forms import BookForm
 from django.urls import reverse
@@ -51,13 +51,3 @@ def edit_book(request, book_id):
             'message': 'Detail buku berhasil diperbarui.',
         }
         return JsonResponse(response_data)
-
-@csrf_exempt
-def delete_book(request, book_id):
-    book = Book.objects.get(pk=book_id)
-    book.delete()
-    return HttpResponseRedirect('/book/')
-
-def get_book(request, book_id):
-    book = Book.objects.get(id=book_id)
-    return HttpResponse(serializers.serialize("json", book), content_type="application/json")

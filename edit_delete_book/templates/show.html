@@ -44,15 +44,14 @@
                         <input type="text" name="genre" class="form-control" value="{{ book.genre }}">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" data-dismiss="modal">Batal</button>
-                        <button type="button" id="button_edit" data-dismiss="modal">Simpan Edit</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-secondary" id="button_edit" data-dismiss="modal">Simpan Edit</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
 <script>
     async function displayBookDetail() {
         document.getElementById("BookDetails").innerHTML = `
@@ -86,6 +85,7 @@
 
         return false;
     }
+    
 </script>
 
 <style>
@@ -116,6 +116,9 @@
         border: none;
         border-radius: 4px;
         cursor: pointer;
+    }
+    .modal-header .close {
+        display: none;
     }
 </style>
 
