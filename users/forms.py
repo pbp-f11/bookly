@@ -21,7 +21,6 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = [
-            'image',  
             'first_name', 
             'last_name', 
             'address', 
@@ -37,14 +36,6 @@ class ProfileUpdateForm(forms.ModelForm):
         }
 
         widgets = {
-            'image': forms.FileInput(
-                attrs={
-                    'class': 'form-control my-2 me-5 border border-primary-subtle',
-                    'required': False
-                }
-
-            ),
-
             'first_name': forms.TextInput(
                 attrs={
                     'class': 'form-control my-2 border border-primary-subtle',

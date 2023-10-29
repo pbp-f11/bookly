@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<body>
+    <a href="{% url 'main:show_main' %}" class="btn btn-light">
+        <i class="bi bi-arrow-left"></i> Kembali
+      </a>
+    <div class="BookPage_GridContainer" id="BookDetails"></div>
+</body>
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Book</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="bookForm" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Judul</label>
+                        <input type="text" name="name" class="form-control" value="{{ book.name }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="author" class="form-label">Penulis</label>
+                        <input type="text" name="author" class="form-control" value="{{ book.author }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Harga</label>
+                        <input type="text" name="price" class="form-control" value="{{ book.price}}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="year" class="form-label">Tahun</label>
+                        <input type="text" name="year" class="form-control" value="{{ book.year }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="genre" class="form-label">Genre</label>
+                        <input type="text" name="genre" class="form-control" value="{{ book.genre }}">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-secondary" id="button_edit" data-dismiss="modal">Simpan Edit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    async function displayBookDetail() {
+        document.getElementById("BookDetails").innerHTML = `
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="book-profile">
+                        <h1><strong>{{ book.name }}</strong></h1>
+                        <br><br>
+                        <p><strong>Penulis: </strong>{{ book.author }}</p>
+                        <p><strong>Rating: </strong> {{ book.rating }}</p>
+                        <p><strong>Reviews: </strong> {{ book.reviews }}</p>
+                        <p><strong>Price: </strong> $ {{ book.price }}</p>
+                        <p><strong>Tahun terbit: </strong> {{ book.year }}</p>
+                        <p><strong>Genre: </strong> {{ book.genre }}</p>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" >Edit</button>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        `;
+    }
+    displayBookDetail();
+
+    document.getElementById("button_edit").onclick = editBook
+    function editBook() {
+        fetch("{% url 'edit_delete_book:edit_book' book.id %}", {
+            method: "POST",
+            body: new FormData(document.getElementById("bookForm")),
+        }).then(displayBookDetail)
+
+        return false;
+    }
+    
+</script>
+
+<style>
+    .book-profile {
+        background-color: #f8f8f8;
+        border: 1px solid #ddd;
+        padding: 20px;
+        margin: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .book-profile h1 {
+        font-size: 24px;
+        color: #333;
+    }
+
+    .book-profile p {
+        font-size: 16px;
+        color: #666;
+    }
+
+    /* Style untuk tombol Edit */
+    .edit-button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .modal-header .close {
+        display: none;
+    }
+</style>
+
+</div>
+{% endblock %}
