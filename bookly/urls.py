@@ -26,6 +26,7 @@ urlpatterns = [
     path('api/books/', include("book.urls")),
     path('', include("main.urls")),
     path('review/', include("review.urls")),
+    path('users/', include(('users.urls', 'users'), namespace='users')),
     path('login/', user_views.login_user, name='login'),
     path('register/', user_views.register, name='register'),
     path('logout/', user_views.logout_user, name='logout'),
