@@ -56,7 +56,7 @@
             </div>
         </nav>
 
-        <div class="d-flex grid gap-4 flex-wrap m-4" id="books_catalog">
+        <div class="d-flex grid gap-4 flex-wrap m-4" id="books_catalog"></div>
             {% for book in books %}
                 <div class="card" style="width: 19rem;">
                     <div class="card-body">
@@ -71,40 +71,42 @@
                     </div>
                 </div>
             {% endfor %}
-        </div>
+    </div>
+        
     </div>
 
-    <!-- <script>
-        async function getBooks() {
-            return fetch("{% url 'book:get_books' %}").then((res) => res.json())
-        }
+    <script>
 
-        async function refreshCatalog() {
-            let htmlString = ''
-            document.getElementById("books_catalog").innerHTML = ""
-            const books = await getBooks()
+        // async function getBooks() {
+        //     return fetch("{% url 'book:get_books' %}").then((res) => res.json())
+        // }
     
-            books.forEach(book => {
-                htmlString +=
-                `<div class="card" style="width: 19rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">${book.fields.name} (${ book.fields.year })</h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">{{ book.author }}</h6>
-                            <ul>
-                                <li>Genre: ${ book.fields.genre }</li>
-                                <li>Rating: ${ book.fields.rating }</li>
-                                <li>Price: $${book.fields.price}</li>
-                            </ul>
-                        <button id="bookmark_button-${book.pk}" class="rounded bookmark-button BookmarkButton" style="background-color: blue;">
-                            <i class="bi bi-bookmark-fill" style="color: 'whitesmoke'};"></i>
-                            Bookmark
-                        </button>
-                    </div>
-                </div>`
-            });
-            document.getElementById("books_catalog").innerHTML += htmlString
-        }
-        refreshCatalog()
-    </script> -->
+        // async function refreshCatalog() {
+        //     let htmlString = ''
+        //     document.getElementById("books_catalog").innerHTML = ""
+        //     const books = await getBooks()
+    
+        //     books.forEach(book => {
+        //         htmlString +=
+        //         `<div class="card" style="width: 19rem;">
+        //             <div class="card-body">
+        //                 <h5 class="card-title">${book.fields.name} (${ book.fields.year })</h5>
+        //                 <h6 class="card-subtitle mb-2 text-body-secondary">{{ book.author }}</h6>
+        //                     <ul>
+        //                         <li>Genre: ${ book.fields.genre }</li>
+        //                         <li>Rating: ${ book.fields.rating }</li>
+        //                         <li>Price: $${book.fields.price}</li>
+        //                     </ul>
+        //                 <button id="bookmark_button-${book.pk}" class="rounded bookmark-button BookmarkButton" style="background-color: blue;">
+        //                     <i class="bi bi-bookmark-fill" style="color: 'whitesmoke'};"></i>
+        //                     Bookmark
+        //                 </button>
+        //             </div>
+        //         </div>`
+        //     });
+        //     document.getElementById("books_catalog").innerHTML += htmlString
+        // }
+        // refreshCatalog()
+    </script>
     
 {% endblock content %}

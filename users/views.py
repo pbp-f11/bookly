@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages 
 from django.contrib.auth.decorators import login_required
 from review.models import Review
-from users.models import Filter
 from django.http import HttpResponse, HttpResponseNotFound
 from django.core import serializers
 

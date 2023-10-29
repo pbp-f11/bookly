@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>Main Page</title>
+
+<!-- Bootstrap icon-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+    #BookmarkButton {
+        background-color: #0d6efd; /* Fill putih */
+        color: white; /* Warna teks merah */
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s; /* Animasi perubahan warna saat hover */
+        outline: none; /* Hapus outline saat tombol mendapatkan fokus */
+        border: solid ;
+    }
+</style>
+{% endblock meta %}
+
+{% block content %}
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Review</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="rating" class="col-form-label">Rating:</label>
+                        <input type="number" class="form-control" id="rating" name="rating"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reviews" class="col-form-label">Review:</label>
+                        <textarea class="form-control" id="reviews" name="reviews"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Review</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row mt-5 justify-content-center">
+        <button type="button" style="font-size: 15px; margin-bottom: 40px; width: 200px" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Review by AJAX</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row " id="item_cards"></div>
+</div>
+
+</body>
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editModalLabel">Edit Review</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="editRating" class="col-form-label">Rating:</label>
+                        <input type="number" class="form-control" id="editRating" name="editRating"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editReviews" class="col-form-label">Review:</label>
+                        <textarea class="form-control" id="editReviews" name="editReviews"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="button_update" data-bs-dismiss="modal">Update Review</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function getReviews() {
+       return fetch("{% url 'review:get_review_json_by_user_id' %}").then((res) => res.json())
+    }
+    async function refreshReviews() {
+        const items = await getReviews();
+        const itemCardsContainer = document.getElementById("item_cards");
+        itemCardsContainer.innerHTML = "";
+
+        items.forEach((item) => {
+            const card = document.createElement("div");
+            card.classList.add( "mb-4");
+
+            card.innerHTML =`
+            <div class="row justify-content-center">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+            <div class="card">
+                <div class="card-header"style="font-size: 20px"> Rating: ${item.fields.rating}</div>
+                <div class="card-body">
+<!--                <h5 class="card-title" style="font-size: 20px">${item.fields.rating}</h5>-->
+                <p class= "card-subtitle mb-2 text-body-secondary"> ${item.fields.reviews}</p>
+                <p class="card-text" style="font-size: 10px">- ${item.fields.user}</p>
+                <p class="card-text" style="font-size: 10px">Date Added: ${item.fields.date_added}</p>
+
+                <a><button onclick="editReview(${item.pk})" class="btn btn-light" type="submit">Edit</button></a>
+<!--                <a><button onclick="incItem(${item.pk})" class="btn btn-light" type="submit">+</button></a>-->
+<!--                <a><button onclick="decItem(${item.pk})" class="btn btn-light" type="submit">-</button></a>-->
+                </div>
+            </div>
+            </div>
+            `;
+            itemCardsContainer.appendChild(card);
+<!--            const editButton = document.createElement("a");-->
+<!--            editButton.innerHTML = '<button class="btn btn-light">Edit</button>';-->
+<!--            editButton.onclick = function () {-->
+<!--                editReview(item.pk, item.fields.rating, item.fields.reviews);-->
+<!--            };-->
+
+<!--            card.appendChild(editButton);-->
+
+        });
+        }
+
+    refreshReviews();
+
+<!--    function editReview(pk, rating, reviews) {-->
+<!--        document.getElementById("editRating").value = rating;-->
+<!--        document.getElementById("editReviews").value = reviews;-->
+
+<!--        // Set up the form to send the updated data-->
+<!--        fetch("{% url 'review:edit_review' %}", {-->
+<!--               method: "POST",-->
+<!--               body: new FormData(document.querySelector('#form'))-->
+<!--           }).then(refreshReviews)-->
+
+<!--           document.getElementById("form").reset()-->
+<!--           return false-->
+<!--       }-->
+<!--    };-->
+
+<!--    // Open the edit modal-->
+<!--    $('#editModal').modal('show');-->
+<!--}-->
+    async function editReview(){
+            let url="{% url 'review:edit_review' %}";
+            url=url.replace('0',id);
+            const response =await fetch(url,{
+                method: "POST",
+            }).then(refreshReviews());
+        }
+
+
+</script>
+{% endblock content %}
