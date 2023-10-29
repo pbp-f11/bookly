@@ -1,6 +1,5 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
 from users.models import Profile
 
 class UserUpdateForm(forms.ModelForm):
@@ -20,8 +19,7 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = [
-            'image',  
+        fields = [  
             'first_name', 
             'last_name', 
             'address', 
@@ -37,14 +35,6 @@ class ProfileUpdateForm(forms.ModelForm):
         }
 
         widgets = {
-            'image': forms.FileInput(
-                attrs={
-                    'class': 'form-control my-2 me-5 border border-primary-subtle',
-                    'required': False
-                }
-
-            ),
-
             'first_name': forms.TextInput(
                 attrs={
                     'class': 'form-control my-2 border border-primary-subtle',
