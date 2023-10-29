@@ -64,6 +64,7 @@
     async function getReviews() {
        return fetch("{% url 'review:get_review_json' book.pk %}").then((res) => res.json())
     }
+    
     async function refreshReviews() {
         const items = await getReviews();
         const itemCardsContainer = document.getElementById("item_cards");

@@ -4,6 +4,10 @@ from users.forms import UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages 
 from django.contrib.auth.decorators import login_required
+from review.models import Review
+from users.models import Filter
+from django.http import HttpResponse, HttpResponseNotFound
+from django.core import serializers
 
 def register(request):
     form = UserCreationForm()
@@ -55,3 +59,13 @@ def profile(request):
         'profile_form': profile_form
     }
     return render(request, 'profile.html', context)
+
+def get_user_review(request):
+    user_review = Review.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize('json', user_review))
+
+def show_user_review(request):
+    return render(request, 'user_review.html')
+
+
+

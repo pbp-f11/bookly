@@ -56,10 +56,25 @@
             </div>
         </nav>
 
-        <div class="d-flex grid gap-4 flex-wrap m-4" id="books_catalog"></div>
+        <div class="d-flex grid gap-4 flex-wrap m-4" id="books_catalog">
+            {% for book in books %}
+                <div class="card" style="width: 19rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ book.name }} ({{ book.year }})</h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">{{ book.author }}</h6>
+                            <ul>
+                                <li>Genre: {{ book.genre }}</li>
+                                <li>Rating: {{ book.rating }}</li>
+                                <li>Price: ${{ book.price }}</li>
+                            </ul>
+                        <a href="{% url 'review:show_reviews' book.pk %}" class="btn btn-primary mx-auto">Review</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 
-    <script>
+    <!-- <script>
         async function getBooks() {
             return fetch("{% url 'book:get_books' %}").then((res) => res.json())
         }
@@ -68,7 +83,6 @@
             let htmlString = ''
             document.getElementById("books_catalog").innerHTML = ""
             const books = await getBooks()
-            const bookmark_list = await getBookmarks()
     
             books.forEach(book => {
                 htmlString +=
@@ -82,15 +96,15 @@
                                 <li>Price: $${book.fields.price}</li>
                             </ul>
                         <button id="bookmark_button-${book.pk}" class="rounded bookmark-button BookmarkButton" style="background-color: blue;">
-                            <i class="bi bi-bookmark-fill" style="color: ${bookmark_list.includes(book.pk) ? 'initial': 'whitesmoke'};"></i>
+                            <i class="bi bi-bookmark-fill" style="color: 'whitesmoke'};"></i>
                             Bookmark
                         </button>
                     </div>
                 </div>`
             });
-            document.getElementById("books_catalog").innerHTML = htmlString
+            document.getElementById("books_catalog").innerHTML += htmlString
         }
         refreshCatalog()
-    </script>
+    </script> -->
     
 {% endblock content %}
