@@ -51,6 +51,10 @@ def get_review_json(request, book_id):
     product_item = Review.objects.filter(book=book)
     return HttpResponse(serializers.serialize('json', product_item, use_natural_foreign_keys=True, use_natural_primary_keys=True))
 
+def get_review_json_by_user_id(request):
+    # book = Book.objects.get(pk=book_id)
+    product_item = Review.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize('json', product_item, use_natural_foreign_keys=True, use_natural_primary_keys=True))
 
 @csrf_exempt
 def add_review_ajax(request, book_id):
@@ -66,3 +70,29 @@ def add_review_ajax(request, book_id):
         return HttpResponse(b"CREATED", status=201)
 
     return HttpResponseNotFound()
+
+def show_reviews_specific_user(request):
+    try:
+        reviews = Review.objects.filter(user=request.user)
+        context = {
+            'reviews': reviews
+        }
+        return render(request, "show_reviews_specific_user.html", context)
+    except Book.DoesNotExist:
+        # Handle the case where the book does not exist
+        # You can render an error page or return an appropriate response here
+        pass
+def edit_review(request):
+    # Get product berdasarkan ID
+    review = Review.objects.filter(user=request.user)
+
+    # Set product sebagai instance dari form
+    form = ProductForm(request.POST or None, instance=item)
+
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_reviews.html", context)
