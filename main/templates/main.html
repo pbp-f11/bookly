@@ -17,11 +17,21 @@
         outline: none; /* Hapus outline saat tombol mendapatkan fokus */
         border: solid ;
     }
+    #AddButton {
+        background-color: #0d6efd; /* Fill putih */
+        color: white; /* Warna teks merah */
+        padding: 5px 10px;
+        cursor: pointer;
+        transition: background-color 0.3s; /* Animasi perubahan warna saat hover */
+        outline: none; /* Hapus outline saat tombol mendapatkan fokus */
+        border: solid ;
+    }
 </style>
 {% endblock meta %}
 
 {% block content %}
     <body>
+        <button id="AddButton" class="rounded" data-bs-toggle="modal" data-bs-target="#addModal">Add Books</button>
         <div class="d-flex grid gap-4 flex-wrap m-4" id="product_cards">
             {% for book in books %}
                 <div class="card" style="width: 19rem;">
@@ -44,6 +54,46 @@
         </div>
     </body>
 
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Add Book</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="bookForm" method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Judul</label>
+                            <input type="text" name="name" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="author" class="form-label">Penulis</label>
+                            <input type="text" name="author" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Harga</label>
+                            <input type="text" name="price" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="year" class="form-label">Tahun</label>
+                            <input type="text" name="year" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="genre" class="form-label">Genre</label>
+                            <input type="text" name="genre" class="form-control">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Simpan Buku</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         var isClicked = false;
 
@@ -58,5 +108,45 @@
                 heartIcon.style.color = 'whitesmoke';
             }
         });
+
+        async function getProducts() {
+            return fetch("{% url 'add_book:get_book' %}").then((res) => res.json())
+        }
+        async function refreshProducts() {
+            document.getElementById("product_cards").innerHTML = ""
+            const products = await getProducts()
+            let htmlString = ``
+            products.forEach((book) => {
+                htmlString += `<div class="d-flex grid gap-4 flex-wrap m-4" id="product_cards">
+                                    <div class="card" style="width: 19rem;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${ book.fields.name } (${ book.fields.year })</h5>
+                                            <h6 class="card-subtitle mb-2 text-body-secondary">${ book.fields.author }</h6>
+                                                <ul>
+                                                    <li>Genre: ${ book.fields.genre }</li>
+                                                    <li>Rating: ${ book.fields.rating }</li>
+                                                    <li>Price: $${ book.fields.price }</li>
+                                                </ul>
+                                            <a href="#" class="btn btn-primary me-3">Review</a>
+                                            <button id="BookmarkButton" class="rounded bookmark-button">
+                                                <i class="bi bi-bookmark-fill" style="color: whitesmoke;"></i>
+                                                Bookmark
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>` 
+            })
+            document.getElementById("product_cards").innerHTML = htmlString
+        }
+
+        document.getElementById("button_add").onclick = addBook
+            function addBook() {
+                fetch("{% url 'add_book:add_book' %}", {
+                    method: "POST",
+                    body: new FormData(document.querySelector('#bookForm')),
+                }).then(refreshProducts)
+
+                return false;
+            }
     </script>
 {% endblock content %}
