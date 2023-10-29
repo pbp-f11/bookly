@@ -21,6 +21,7 @@ from users import views as user_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/books/', include("book.urls")),
+    path('edit_book/', include("edit_delete_book.urls")),
     path('', include("main.urls")),
     path('review/', include("review.urls")),
     path('users/', include(('users.urls', 'users'), namespace='users')),
