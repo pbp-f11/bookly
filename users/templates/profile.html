@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Profile</title>
+
+    <style>
+        #border-personal{
+            background-color: white;
+            margin-left: 20%;
+            margin-right: 20%;
+        }
+
+        #border-image{
+            background-color: white;
+            margin-left: 20%;
+            margin-right: 20%;
+        }
+
+        .container-flow{
+            background-color: #F8F9FA;
+        }
+
+    </style>
+{% endblock meta %}
+
+{% block content %}
+    <div class="container-flow">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="content-section">
+                <div class="mx-auto mb-4">
+                    <div class="border border-primary rounded-4 " id="border-image">
+                        <div class="row my-3 ms-4">
+                            <a href="{% url 'main:show_main' %}" style="text-decoration: none; font-size: 130%;">
+                                <i class="bi bi-arrow-left"></i>
+                                Home
+                            </a>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <img class="img-fluid rounded-circle mb-3 ms-5 me-2" src="{{ user.profile.image.url }}">
+                            </div>
+                            <div class="col-7 ms-5">
+                                <div class="row">
+                                    <p style="font-size: 150%;">Change your profile picture</p>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group ms">
+                                        <b>{{ profile_form.image.label }}</b>
+                                        {{ profile_form.image }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+        
+                <div class="mx-auto">
+                    <div class="border border-primary rounded-4" id="border-personal">
+                        <h4 class="personal-info my-3 ms-5">User Info</h4>
+    
+                        <div class="row gx-5">
+                            <div class="col">
+                                <div class="form-group ms-5">
+                                    <b>{{ user_form.username.label }}</b>
+                                    {{ user_form.username }}
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group me-5">
+                                    <b>{{ profile_form.email.label }}</b>
+                                    {{ profile_form.email }}
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="row gx-5">
+                            <div class="col">
+                                <div class="form-group ms-5">
+                                    <b>{{ profile_form.first_name.label }}</b>
+                                    {{ profile_form.first_name }}
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group me-5">
+                                    <b>{{ profile_form.last_name.label }}</b>
+                                    {{ profile_form.last_name }}
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="row gx-5">
+                            <div class="col">
+                                <div class="form-group ms-5">
+                                    <b>{{ profile_form.gender.label }}</b>
+                                    {{ profile_form.gender }}
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group me-5">
+                                    <b>{{ profile_form.phone_number.label }}</b>
+                                    {{ profile_form.phone_number }}
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="row">
+                            <div class="col" id="address">
+                                <div class="form-group mx-5 mb-4">
+                                    <b>{{ profile_form.address.label }}</b>
+                                    {{ profile_form.address }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-3 mb-4">
+                            <div class="form-group">
+                                <button class="btn btn-primary" type="submit" style="width: 80%;">Save Profile</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

@@ -1,7 +1,7 @@
 from django.forms import ModelForm
-from add_review.models import Review
+from review.models import Review
 
 class ProductForm(ModelForm):
     class Meta:
         model = Review
-        fields = ["rating", "review"]
+        fields = ["rating", "reviews"]

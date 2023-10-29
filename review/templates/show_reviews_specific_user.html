@@ -54,15 +54,44 @@
         <button type="button" style="font-size: 15px; margin-bottom: 40px; width: 200px" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Review by AJAX</button>
     </div>
 </div>
+
 <div class="container">
     <div class="row " id="item_cards"></div>
 </div>
 
 </body>
 
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editModalLabel">Edit Review</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="editRating" class="col-form-label">Rating:</label>
+                        <input type="number" class="form-control" id="editRating" name="editRating"></input>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editReviews" class="col-form-label">Review:</label>
+                        <textarea class="form-control" id="editReviews" name="editReviews"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="button_update" data-bs-dismiss="modal">Update Review</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     async function getReviews() {
-       return fetch("{% url 'review:get_review_json' book.pk %}").then((res) => res.json())
+       return fetch("{% url 'review:get_review_json_by_user_id' %}").then((res) => res.json())
     }
     async function refreshReviews() {
         const items = await getReviews();
@@ -84,7 +113,7 @@
                 <p class="card-text" style="font-size: 10px">- ${item.fields.user}</p>
                 <p class="card-text" style="font-size: 10px">Date Added: ${item.fields.date_added}</p>
 
-<!--                <a><button onclick="deleteItem(${item.pk})" class="btn btn-light" type="submit">Delete</button></a>-->
+                <a><button onclick="editReview(${item.pk})" class="btn btn-light" type="submit">Edit</button></a>
 <!--                <a><button onclick="incItem(${item.pk})" class="btn btn-light" type="submit">+</button></a>-->
 <!--                <a><button onclick="decItem(${item.pk})" class="btn btn-light" type="submit">-</button></a>-->
                 </div>
@@ -92,22 +121,45 @@
             </div>
             `;
             itemCardsContainer.appendChild(card);
+<!--            const editButton = document.createElement("a");-->
+<!--            editButton.innerHTML = '<button class="btn btn-light">Edit</button>';-->
+<!--            editButton.onclick = function () {-->
+<!--                editReview(item.pk, item.fields.rating, item.fields.reviews);-->
+<!--            };-->
+
+<!--            card.appendChild(editButton);-->
+
         });
         }
 
     refreshReviews();
 
-    function addReview() {
-       fetch("{% url 'review:add_review_ajax' book.pk %}", {
-           method: "POST",
-           body: new FormData(document.querySelector('#form'))
-       }).then(refreshReviews)
+<!--    function editReview(pk, rating, reviews) {-->
+<!--        document.getElementById("editRating").value = rating;-->
+<!--        document.getElementById("editReviews").value = reviews;-->
 
-       document.getElementById("form").reset()
-       return false
-   }
+<!--        // Set up the form to send the updated data-->
+<!--        fetch("{% url 'review:edit_review' %}", {-->
+<!--               method: "POST",-->
+<!--               body: new FormData(document.querySelector('#form'))-->
+<!--           }).then(refreshReviews)-->
 
-    document.getElementById("button_add").onclick = addReview
+<!--           document.getElementById("form").reset()-->
+<!--           return false-->
+<!--       }-->
+<!--    };-->
+
+<!--    // Open the edit modal-->
+<!--    $('#editModal').modal('show');-->
+<!--}-->
+    async function editReview(){
+            let url="{% url 'review:edit_review' %}";
+            url=url.replace('0',id);
+            const response =await fetch(url,{
+                method: "POST",
+            }).then(refreshReviews());
+        }
+
 
 </script>
 {% endblock content %}
