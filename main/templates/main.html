@@ -8,15 +8,6 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
 <style>
-    .BookmarkButton {
-        background-color: #0d6efd;
-        color: white;
-        padding: 10px 20px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        outline: none; 
-        border: solid ;
-    }
     .ReviewButton {
         background-color: #0d6efd;
         color: white;
@@ -32,7 +23,6 @@
 {% block content %}
     <body>
         <div class="d-flex grid gap-4 flex-wrap m-4" id="product_cards">
-            {% for book in books %}
     <div class="container">
         <nav class="navbar navbar-expand-lg py-1" style="background-color: #e3f2fd;">
             <div class="container">
@@ -75,95 +65,9 @@
 
 
         <div class="d-flex grid gap-4 flex-wrap m-4" id="books_catalog"></div>
-            <!-- {% for book in books %}
->>>>>>> 1c38bb0 (selesai nyambungin main ajax n users (intinya yg di stage/yodha-v.2) ke review-nya stage/farrel)
-                <div class="card" style="width: 19rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ book.name }} ({{ book.year }})</h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">{{ book.author }}</h6>
-                            <ul>
-                                <li>Genre: {{ book.genre }}</li>
-                                <li>Rating: {{ book.rating }}</li>
-                                <li>Price: ${{ book.price }}</li>
-                            </ul>
-                        <a href="#" class="btn btn-primary me-3">Review</a>
-                        <button id="BookmarkButton" class="rounded bookmark-button">
-                            <i class="bi bi-bookmark-fill" style="color: whitesmoke;"></i>
-                            Bookmark
-                        </button>
-                    </div>
-                </div>
-            {% endfor %}
-        <div class="container">
-            <nav class="navbar navbar-expand-lg py-1" style="background-color: #e3f2fd;">
-                <div class="container">
-                    <a class="navbar-brand" href="#">Welcome back, {{ name }}</a>
-                    <button
-                        class="navbar-toggler"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target=""
-                        >
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-        
-                    <div class="collapse navbar-collapse" id="navmenu">
-                        <ul class="navbar-nav ms-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" >
-                                    Profile
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" >
-                                    About
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'users:logout' %}">
-                                    Logout
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-
-
-            <div class="d-flex grid gap-4 flex-wrap m-4" id="product_cards">
-                {% for book in books %}
-                    <div class="card" style="width: 19rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ book.name }} ({{ book.year }})</h5>
-                            <h6 class="card-subtitle mb-2 text-body-secondary">{{ book.author }}</h6>
-                                <ul>
-                                    <li>Genre: {{ book.genre }}</li>
-                                    <li>Rating: {{ book.rating }}</li>
-                                    <li>Price: ${{ book.price }}</li>
-                                </ul>
-                            <a href="{% url 'review:show_reviews' book.pk %}" class="btn btn-primary me-3">Review</a>
-                            <button id="BookmarkButton" class="rounded bookmark-button">
-                                <i class="bi bi-bookmark-fill" style="color: whitesmoke;"></i>
-                                Bookmark
-                            </button>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </body>
-=======
-                        <a href="{% url 'review:show_reviews' book.pk %}" class="btn btn-primary me-3">Review</a>
-                        <button id="bookmark_button-${book.pk}" class="rounded bookmark-button BookmarkButton">
-                            <i class="bi bi-bookmark-fill" style="color: whitesmoke;"></i>
-                            Bookmark
-                        </button>
-                    </div>
-                </div>
-            {% endfor %} -->
+            
         
     </div>
->>>>>>> 1c38bb0 (selesai nyambungin main ajax n users (intinya yg di stage/yodha-v.2) ke review-nya stage/farrel)
 
     <script>
 
@@ -179,28 +83,23 @@
                 const bookId = book.id;
 
                 htmlString +=
-                `<div class="card" style="width: 19rem;">
-                    <div class="card-body">
-                        <h5 class="card-title"><a href="{% url 'edit_delete_book:show' book.id %}">${book.fields.name} (${ book.fields.year })</a></h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">{{ book.author }}</h6>
-                            <ul>
-                                <li>Genre: ${ book.fields.genre }</li>
-                                <li>Rating: ${ book.fields.rating }</li>
-                                <li>Price: $${book.fields.price}</li>
-                            </ul>
-                        <button id="bookmark_button-${book.pk}" class="rounded bookmark-button BookmarkButton" style="background-color: blue;">
-                            <i class="bi bi-bookmark-fill" style="color: whitesmoke;"></i>
-                            Bookmark
-                        </button>
-                        <button class="rounded review-button ReviewButton" data-book-pk="${book.pk}" style="background-color: blue;">
-                            <i style="color: white;"></i>
-                            Review
-                        </button>
-                    </div>
-                </div>`
+                `   <div class="card" style="width: 19rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">${book.fields.name} (${ book.fields.year })s</h5>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">{{ book.author }}</h6>
+                                <ul>
+                                    <li>Genre: ${ book.fields.genre }</li>
+                                    <li>Rating: ${ book.fields.rating }</li>
+                                    <li>Price: $${book.fields.price}</li>
+                                </ul>
+                            <button class="rounded review-button ReviewButton mx-auto" data-book-pk="${book.pk}" style="background-color: blue;">
+                                <i style="color: white;"></i>
+                                Review
+                            </button>
+                        </div>
+                    </div>`
             });
-    
-            document.getElementById("books_catalog").innerHTML = htmlString;
+            document.getElementById("books_catalog").innerHTML += htmlString;
 
             // Add a click event listener to the review buttons
             document.querySelectorAll(".review-button").forEach((button) => {
@@ -210,43 +109,6 @@
                     window.location.href = url;
                 });
             });
-
-
-
-            books.forEach((book) => {
-                var button = document.getElementById(`bookmark_button-${book.pk}`);
-
-
-                var bookmarkIcon = button.querySelector('.bi-bookmark-fill');
-    
-                var isClicked = localStorage.getItem(`isClicked-${book.pk}`) === 'true';
-
-    
-                if (isClicked) {
-                    bookmarkIcon.style.color = 'initial';
-                } else {
-                    bookmarkIcon.style.color = 'whitesmoke';
-                }
-
-
-    
-                button.addEventListener('click', function() {
-                    isClicked = !isClicked;
-                    if (isClicked) {
-                        bookmarkIcon.style.color = 'initial';
-                        fetch(`add-bookmark/${book.pk}`).then(refreshCatalog)
-                        console.log(`Menambahkan buku dengan id ${book.pk} ke bookmark`)
-                    } else {
-                        bookmarkIcon.style.color = 'whitesmoke';
-                        fetch(`delete-bookmark/${book.pk}`).then(refreshCatalog)
-                        console.log(`Menghapus buku dengan id ${book.pk} dari bookmark`)
-                    }
-    
-                    localStorage.setItem(`isClicked-${book.pk}`, isClicked.toString());
-                });
-
-
-            })
         }
         refreshCatalog()
 
