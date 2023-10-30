@@ -64,7 +64,6 @@
     async function getReviews() {
        return fetch("{% url 'review:get_review_json' book.pk %}").then((res) => res.json())
     }
-    
     async function refreshReviews() {
         const items = await getReviews();
         const itemCardsContainer = document.getElementById("item_cards");
@@ -99,14 +98,14 @@
     refreshReviews();
 
     function addReview() {
-           fetch("{% url 'review:add_review_ajax' book.pk %}", {
-               method: "POST",
-               body: new FormData(document.querySelector('#form'))
-           }).then(refreshReviews)
+       fetch("{% url 'review:add_review_ajax' book.pk %}", {
+           method: "POST",
+           body: new FormData(document.querySelector('#form'))
+       }).then(refreshReviews)
 
-           document.getElementById("form").reset()
-           return false
-       }
+       document.getElementById("form").reset()
+       return false
+   }
 
     document.getElementById("button_add").onclick = addReview
 
