@@ -1,15 +1,12 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
-from django.views.decorators.csrf import csrf_exempt
-
 from users.forms import UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages 
 from django.contrib.auth.decorators import login_required
-
-from users.models import Profile
-
+from review.models import Review
+from django.http import HttpResponse, HttpResponseNotFound
+from django.core import serializers
 
 def register(request):
     form = UserCreationForm()
@@ -20,22 +17,20 @@ def register(request):
             form.save()
             messages.success(request, 'Your account has been successfully created!')
             return redirect('login')
-    context = {'form': form}
+    context = {'form':form}
     return render(request, 'register.html', context)
+
 
 def login_user(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
-        try:
-            if user is not None:
-                login(request, user)
-                return redirect('main:show_main')
-            else:
-                messages.info(request, 'Sorry, incorrect username or password. Please try again.')
-        except ObjectDoesNotExist:
-            Profile.objects.create(user=user)
+        if user is not None:
+            login(request, user)
+            return redirect('main:show_main')
+        else:
+            messages.info(request, 'Sorry, incorrect username or password. Please try again.')
     context = {}
     return render(request, 'login.html', context)
 
@@ -63,3 +58,13 @@ def profile(request):
         'profile_form': profile_form
     }
     return render(request, 'profile.html', context)
+
+def get_user_review(request):
+    user_review = Review.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize('json', user_review))
+
+def show_user_review(request):
+    return render(request, 'user_review.html')
+
+
+

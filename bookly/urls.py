@@ -17,9 +17,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from users import views as user_views
-from django.conf import settings
-from django.conf.urls.static import static
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,5 +29,6 @@ urlpatterns = [
     path('register/', user_views.register, name='register'),
     path('logout/', user_views.logout_user, name='logout'),
     path('profile/', user_views.profile, name='profile'),
+    path('user-review/', user_views.show_user_review, name='user-review'),
 ]
 

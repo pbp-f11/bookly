@@ -120,46 +120,11 @@
             </div>
             </div>
             `;
+        
             itemCardsContainer.appendChild(card);
-<!--            const editButton = document.createElement("a");-->
-<!--            editButton.innerHTML = '<button class="btn btn-light">Edit</button>';-->
-<!--            editButton.onclick = function () {-->
-<!--                editReview(item.pk, item.fields.rating, item.fields.reviews);-->
-<!--            };-->
-
-<!--            card.appendChild(editButton);-->
-
-        });
-        }
-
-    refreshReviews();
-
-<!--    function editReview(pk, rating, reviews) {-->
-<!--        document.getElementById("editRating").value = rating;-->
-<!--        document.getElementById("editReviews").value = reviews;-->
-
-<!--        // Set up the form to send the updated data-->
-<!--        fetch("{% url 'review:edit_review' %}", {-->
-<!--               method: "POST",-->
-<!--               body: new FormData(document.querySelector('#form'))-->
-<!--           }).then(refreshReviews)-->
-
-<!--           document.getElementById("form").reset()-->
-<!--           return false-->
-<!--       }-->
-<!--    };-->
-
-<!--    // Open the edit modal-->
-<!--    $('#editModal').modal('show');-->
-<!--}-->
-    async function editReview(){
-            let url="{% url 'review:edit_review' %}";
-            url=url.replace('0',id);
-            const response =await fetch(url,{
-                method: "POST",
-            }).then(refreshReviews());
-        }
-
+        })
+}
+        
 
 </script>
 {% endblock content %}

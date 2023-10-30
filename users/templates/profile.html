@@ -10,44 +10,30 @@
             margin-right: 20%;
         }
 
-        #border-image{
-            background-color: white;
-            margin-left: 20%;
-            margin-right: 20%;
-        }
-
-        .container-flow{
-            background-color: #F8F9FA;
-        }
-
     </style>
 {% endblock meta %}
 
 {% block content %}
     <div class="container-flow">
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
+        <form method="POST">
+            {% csrf_token %}g
             <div class="content-section">
-                <div class="mx-auto mb-4">
-                    <div class="border border-primary rounded-4 " id="border-image">
-                        <div class="row my-3 ms-4">
-                            <a href="{% url 'main:show_main' %}" style="text-decoration: none; font-size: 130%;">
-                                <i class="bi bi-arrow-left"></i>
-                                Home
-                            </a>
-                        </div>
-                        <div class="row">
-                            <div class="col-7 ms-5">
-                                <div class="row">
-                                    <p style="font-size: 150%;">Change your profile picture</p>
-                                </div>
-                            </div>
-                        </div> 
-                    </div>
-                </div>
-        
-                <div class="mx-auto">
+                <div class="mx-auto mt-5">
                     <div class="border border-primary rounded-4" id="border-personal">
+                        <div class="row my-3 ms-4">
+                            <div class="col-9">
+                                <a href="{% url 'main:show_main' %}" style="text-decoration: none; font-size: 130%;">
+                                    <i class="bi bi-arrow-left"></i>
+                                    Home
+                                </a>
+                            </div>
+                            <div class="col ms-4">
+                                <a href="{% url 'user-review' %}" style="text-decoration: none; font-size: 130%; text-align: right;">
+                                    See your reviews
+                                    <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
                         <h4 class="personal-info my-3 ms-5">User Info</h4>
     
                         <div class="row gx-5">
