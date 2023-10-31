@@ -49,6 +49,10 @@
         </div>
     </div>
 </div>
+<body>
+<a href="{% url 'main:show_main' %}" class="btn btn-light">
+    <i class="bi bi-arrow-left"></i> Back
+</a>
 <div class="container">
     <div class="row mt-5 justify-content-center">
         <button type="button" style="font-size: 15px; margin-bottom: 40px; width: 200px" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Review by AJAX</button>
@@ -57,7 +61,6 @@
 <div class="container">
     <div class="row " id="item_cards"></div>
 </div>
-
 </body>
 
 <script>
