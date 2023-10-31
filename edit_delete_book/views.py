@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from edit_delete_book.forms import BookForm
@@ -10,18 +11,28 @@ from django.core import serializers
 def show(request, book_id):
     book = Book.objects.get(pk=book_id)
     forms = BookForm(request.POST or None, instance=book)
-    if forms.is_valid() and request.method == 'POST':
-        forms.save()
-        return HttpResponseRedirect(reverse('edit_delete_book:show', args=(book_id,)))
     context = {
         'book': book,
         'forms': forms,
     }
     return render(request, 'show.html', context)
 
-def get_book(request):
-    book = Book.objects.all()
-    return HttpResponse(serializers.serialize('json', book))
+def get_book_json(request, book_id):
+    try:
+        book = Book.objects.get(pk=book_id)
+    except Book.DoesNotExist:
+        # Handle the case where the book doesn't exist
+        return HttpResponseNotFound("Book not found")
+
+    # Serialize the book data
+    serialized_book = serializers.serialize('json', [book])
+
+    # Convert the serialized data to a Python dictionary
+    book_data = serialized_book[1:-1]  # Remove square brackets from serialized data
+    book_dict = json.loads(book_data)
+
+    # Return the book data as JSON response
+    return JsonResponse(book_dict)
 
 @csrf_exempt
 def edit_book(request, book_id):

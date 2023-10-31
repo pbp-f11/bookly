@@ -83,14 +83,13 @@
                 const bookId = book.id;
 
                 htmlString +=
-                `   <div class="card" style="width: 19rem;">
+                `   <div class="card" data-book-pk="${book.pk}" style="width: 19rem;">
                         <div class="card-body">
                             <h5 class="card-title">${book.fields.name} (${ book.fields.year })s</h5>
                             <h6 class="card-subtitle mb-2 text-body-secondary">{{ book.author }}</h6>
                                 <ul>
                                     <li>Genre: ${ book.fields.genre }</li>
                                     <li>Rating: ${ book.fields.rating }</li>
-                                    <li>Price: $${book.fields.price}</li>
                                 </ul>
                             <button class="rounded review-button ReviewButton mx-auto" data-book-pk="${book.pk}" style="background-color: blue;">
                                 <i style="color: white;"></i>
@@ -101,11 +100,18 @@
             });
             document.getElementById("books_catalog").innerHTML += htmlString;
 
-            // Add a click event listener to the review buttons
             document.querySelectorAll(".review-button").forEach((button) => {
-                button.addEventListener("click", function () {
+                button.addEventListener("click", function (event) {
+                    event.stopPropagation();
                     const bookPk = this.getAttribute("data-book-pk");
-                    const url = `/review/show-reviews/${bookPk}/`; // Replace with your actual URL pattern
+                    const url = `/review/show-reviews/${bookPk}/`; 
+                    window.location.href = url;
+                });
+            });
+            document.querySelectorAll(".card").forEach((card) => {
+                card.addEventListener("click", function () {
+                    const bookPk = this.getAttribute("data-book-pk");
+                    const url = `/edit_book/show/${bookPk}/`; 
                     window.location.href = url;
                 });
             });
