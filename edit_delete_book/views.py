@@ -8,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.core import serializers
 
+from review.models import Review
+
 def show(request, book_id):
     book = Book.objects.get(pk=book_id)
     forms = BookForm(request.POST or None, instance=book)
@@ -33,6 +35,11 @@ def get_book_json(request, book_id):
 
     # Return the book data as JSON response
     return JsonResponse(book_dict)
+
+def get_review_json(request, book_id):
+    book = Book.objects.get(pk=book_id)
+    product_item = Review.objects.filter(book=book)
+    return HttpResponse(serializers.serialize('json', product_item, use_natural_foreign_keys=True, use_natural_primary_keys=True))
 
 @csrf_exempt
 def edit_book(request, book_id):

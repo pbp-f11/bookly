@@ -61,9 +61,13 @@
         async function getBook() {
             return fetch("{% url 'edit_delete_book:get_book_json' book.pk %}").then((res) => res.json())
         }
+        async function getReviews() {
+            return fetch("{% url 'review:get_review_json' book.pk %}").then((res) => res.json())
+         }
         async function displayBookDetail() {
             document.getElementById("BookDetails").innerHTML = ""
             const book = await getBook();
+            const reviews = await getReviews();
             let HTMLString = `
             <div class="container">
                 <div class="row">
@@ -83,6 +87,15 @@
                 </div> 
             </div>
             `;
+            reviews.forEach((review) => {
+                HTMLString += `
+                <div class="review">
+                    <h3> ${review.fields.user} :</h3>
+                    <p>Rating: ${review.fields.rating}</p>
+                    <h6>${review.fields.reviews}</h6>
+                </div>
+                `
+            })
             document.getElementById("BookDetails").innerHTML = HTMLString
         }
         displayBookDetail()
@@ -120,7 +133,6 @@
             color: #666;
         }
 
-        /* Style untuk tombol Edit */
         .edit-button {
             background-color: #007bff;
             color: #fff;
@@ -129,9 +141,40 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
         .modal-header .close {
             display: none;
         }
+
+        .review {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .review h3 {
+            font-size: 18px;
+            margin: 0;
+            color: #333;
+        }
+        
+        .review p {
+            font-size: 16px;
+            color: #666;
+        }
+        
+        .separator {
+            border-top: 1px solid #e0e0e0;
+            margin: 20px 0;
+        }
+        
+        .reviews {
+            margin-top: 20px;
+        }
+
     </style>
 
     </div>
