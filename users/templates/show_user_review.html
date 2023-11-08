@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>User Review</title>
+{% endblock meta %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row " id="item_cards"></div>
+    </div>
+
+    <script>
+        async function getUserReview() {
+            return fetch("{% url 'users:get_user_review' %}").then((res) => res.json())
+        }
+
+        async function getBooks() {
+            return fetch("{% url 'book:get_books' %}").then((res) => res.json())
+        }
+
+        async function refreshCatalog() {
+            let htmlString = '';
+            document.getElementById("user_review_catalog").innerHTML = "";
+            const user_reviews = await getUserReview();
+            const books = await getBooks();
+
+            user_reviews.forEach(review => {
+                books.forEach(book => {
+                    if(review.fields.book == book.pk) {
+                        htmlString += `<div class="card" style="width: 19rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">${book.fields.name} (${ book.fields.year })</h5>
+                                <h6 class="card-subtitle mb-2 text-body-secondary">${ book.fields.author }</h6>
+                                <ul>
+                                    <li>Genre: ${book.fields.genre}</li>
+                                    <li>Rating: ${book.fields.rating}</li>
+                                    <li>Price: $${book.fields.price}</li>
+                                </ul>
+                                <a href="{#}" class="btn btn-primary ms-5";>See Review</a>
+                            </div>
+                        </div>`;
+                    }
+                })
+            })
+            document.getElementById("user_review_catalog").innerHTML += htmlString;
+        }
+        refreshCatalog();
+    </script>
+{% endblock content %}

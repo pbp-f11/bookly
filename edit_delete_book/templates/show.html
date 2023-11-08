@@ -1,0 +1,181 @@
+    {% extends 'base.html' %}
+    {% load static %}
+
+    {% block content %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <body>
+        <a href="{% url 'main:show_main' %}" class="btn btn-light">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
+        <div class="BookPage_GridContainer" id="BookDetails"></div>
+    </body>
+
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Book</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="bookForm" method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Judul</label>
+                            <input type="text" name="name" class="form-control" value="{{ book.name }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="author" class="form-label">Penulis</label>
+                            <input type="text" name="author" class="form-control" value="{{ book.author }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Harga</label>
+                            <input type="text" name="price" class="form-control" value="{{ book.price}}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="year" class="form-label">Tahun</label>
+                            <input type="text" name="year" class="form-control" value="{{ book.year }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="genre" class="form-label">Genre</label>
+                            <input type="text" name="genre" class="form-control" value="{{ book.genre }}">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                            <button type="button" class="btn btn-secondary" id="button_edit" data-dismiss="modal">Simpan Edit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        async function getBook() {
+            return fetch("{% url 'edit_delete_book:get_book_json' book.pk %}").then((res) => res.json())
+        }
+        async function getReviews() {
+            return fetch("{% url 'review:get_review_json' book.pk %}").then((res) => res.json())
+         }
+        async function displayBookDetail() {
+            document.getElementById("BookDetails").innerHTML = ""
+            const book = await getBook();
+            const reviews = await getReviews();
+            let HTMLString = `
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="book-profile">
+                            <h1><strong>${book.fields.name}</strong></h1>
+                            <br><br>
+                            <p><strong>Penulis: </strong> ${book.fields.author}</p>
+                            <p><strong>Rating: </strong> ${book.fields.rating}</p>
+                            <p><strong>Reviews: </strong> ${book.fields.reviews}</p>
+                            <p><strong>Price: </strong> $ ${book.fields.price}</p>
+                            <p><strong>Tahun terbit: </strong> ${book.fields.year}</p>
+                            <p><strong>Genre: </strong> ${book.fields.genre}</p>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" >Edit</button>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            `;
+            reviews.forEach((review) => {
+                HTMLString += `
+                <div class="review">
+                    <h3> ${review.fields.user} :</h3>
+                    <p>Rating: ${review.fields.rating}</p>
+                    <h6>${review.fields.reviews}</h6>
+                </div>
+                `
+            })
+            document.getElementById("BookDetails").innerHTML = HTMLString
+        }
+        displayBookDetail()
+
+        
+        function editBook() {
+            fetch("{% url 'edit_delete_book:edit_book' book.id %}", {
+                method: "POST",
+                body: new FormData(document.getElementById("bookForm")),
+            }).then(displayBookDetail)
+
+            return false;
+        }
+        document.getElementById("button_edit").onclick = editBook
+        
+    </script>
+
+    <style>
+        .book-profile {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-profile h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .book-profile p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .edit-button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .modal-header .close {
+            display: none;
+        }
+
+        .review {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .review h3 {
+            font-size: 18px;
+            margin: 0;
+            color: #333;
+        }
+        
+        .review p {
+            font-size: 16px;
+            color: #666;
+        }
+        
+        .separator {
+            border-top: 1px solid #e0e0e0;
+            margin: 20px 0;
+        }
+        
+        .reviews {
+            margin-top: 20px;
+        }
+
+    </style>
+
+    </div>
+    {% endblock %}
