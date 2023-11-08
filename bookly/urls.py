@@ -21,6 +21,7 @@ from users import views as user_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/books/', include("book.urls")),
+    path('add_book/', include("add_book.urls")),
     path('edit_book/', include("edit_delete_book.urls")),
     path('', include("main.urls")),
     path('review/', include("review.urls")),
@@ -31,4 +32,3 @@ urlpatterns = [
     path('profile/', user_views.profile, name='profile'),
     path('user-review/', user_views.show_user_review, name='user-review'),
 ]
-
