@@ -1,5 +1,6 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound
+import json
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound, JsonResponse
 from review.forms import ProductForm
 from django.urls import reverse
 from review.models import Review
@@ -82,17 +83,34 @@ def show_reviews_specific_user(request):
         # Handle the case where the book does not exist
         # You can render an error page or return an appropriate response here
         pass
-def edit_review(request):
+
+def edit_reviews(request, book_id):
     # Get product berdasarkan ID
-    review = Review.objects.filter(user=request.user)
+    product = Review.objects.get(pk = book_id)
 
     # Set product sebagai instance dari form
-    form = ProductForm(request.POST or None, instance=item)
+    form = ProductForm(request.POST or None, instance=product)
 
     if form.is_valid() and request.method == "POST":
         # Simpan form dan kembali ke halaman awal
         form.save()
-        return HttpResponseRedirect(reverse('main:show_main'))
+        return HttpResponseRedirect(reverse('review:show_reviews_specific_user'))
 
     context = {'form': form}
     return render(request, "edit_reviews.html", context)
+
+@csrf_exempt
+def delete_item_ajax(request, review_id):
+    if request.method == 'DELETE':
+        product = get_object_or_404(Review, pk=review_id)
+        product.delete()
+        return HttpResponse(b"DELETED", status=204)
+    return HttpResponseNotFound()
+
+def delete_item_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        product = get_object_or_404(Review, pk=data['review_id'])
+        product.delete()
+        return JsonResponse({"status": True}, status = 200)
+    return JsonResponse ({"status": True}, status = 200)

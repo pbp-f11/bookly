@@ -51,48 +51,19 @@
 </div>
 <div class="container">
     <div class="row mt-5 justify-content-center">
-        <button type="button" style="font-size: 15px; margin-bottom: 40px; width: 200px" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Review by AJAX</button>
+        <!-- <button type="button" style="font-size: 15px; margin-bottom: 40px; width: 200px" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Review by AJAX</button> -->
     </div>
 </div>
 
 <div class="container">
-    <div class="row " id="item_cards"></div>
-</div>
-
-</body>
-
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="editModalLabel">Edit Review</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="editForm" onsubmit="return false;">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="editRating" class="col-form-label">Rating:</label>
-                        <input type="number" class="form-control" id="editRating" name="editRating"></input>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editReviews" class="col-form-label">Review:</label>
-                        <textarea class="form-control" id="editReviews" name="editReviews"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="button_update" data-bs-dismiss="modal">Update Review</button>
-            </div>
-        </div>
-    </div>
+    <div class="row" id="item_cards"></div>
 </div>
 
 <script>
     async function getReviews() {
-       return fetch("{% url 'review:get_review_json_by_user_id' %}").then((res) => res.json())
+        return fetch("{% url 'review:get_review_json_by_user_id' %}").then((res) => res.json())
     }
+
     async function refreshReviews() {
         const items = await getReviews();
         const itemCardsContainer = document.getElementById("item_cards");
@@ -100,31 +71,61 @@
 
         items.forEach((item) => {
             const card = document.createElement("div");
-            card.classList.add( "mb-4");
+            card.classList.add("mb-4");
 
-            card.innerHTML =`
+            card.innerHTML = `
             <div class="row justify-content-center">
-            <div class="col-sm-6 mb-3 mb-sm-0">
-            <div class="card">
-                <div class="card-header"style="font-size: 20px"> Rating: ${item.fields.rating}</div>
-                <div class="card-body">
-<!--                <h5 class="card-title" style="font-size: 20px">${item.fields.rating}</h5>-->
-                <p class= "card-subtitle mb-2 text-body-secondary"> ${item.fields.reviews}</p>
-                <p class="card-text" style="font-size: 10px">- ${item.fields.user}</p>
-                <p class="card-text" style="font-size: 10px">Date Added: ${item.fields.date_added}</p>
-
-                <a><button onclick="editReview(${item.pk})" class="btn btn-light" type="submit">Edit</button></a>
-<!--                <a><button onclick="incItem(${item.pk})" class="btn btn-light" type="submit">+</button></a>-->
-<!--                <a><button onclick="decItem(${item.pk})" class="btn btn-light" type="submit">-</button></a>-->
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <div class="card">
+                        <div class="card-header" style="font-size: 20px"> Rating: ${item.fields.rating}</div>
+                        <div class="card-body">
+                            <p class="card-subtitle mb-2 text-body-secondary"> ${item.fields.reviews}</p>
+                            <p class="card-text" style="font-size: 10px">- ${item.fields.user}</p>
+                            <p class="card-text" style="font-size: 10px">Date Added: ${item.fields.date_added}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="edit-reviews/${item.pk}" class="btn btn-primary">Edit</a>
+                            <button class="btn btn-danger" data-url="{% url 'review:delete_item_ajax' 123 %}" onclick="deleteProduct(this, ${item.pk})">Delete</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            </div>
             `;
-        
             itemCardsContainer.appendChild(card);
-        })
-}
-        
+        });
+    }
+
+    refreshReviews();
+
+    document.querySelectorAll(".edit-review-button").forEach((button) => {
+        button.addEventListener("click", function () {
+            const bookPk = this.getAttribute("data-book-pk");
+            const url = `/review/show-reviews-specific-user/edit-review/${bookPk}/`; // Gantilah dengan URL yang sesuai
+            window.location.href = url;
+        });
+    });
+
+    function editReview() {
+        fetch(`/show-reviews-specific-user/edit-review/${book_id}/`,{
+           method: "POST",
+           body: new FormData(document.querySelector('#form'))
+        }).then(refreshReviews)
+
+        document.getElementById("form").reset()
+        return false
+    }
+
+    document.getElementById("button_update").onclick = editReview;
+
+    function deleteProduct(button, id) {
+        let url = button.getAttribute('data-url').replace('123', id);
+        fetch(url, {
+            method: "DELETE",
+        }).then(refreshReviews)
+    }
+
+    
 
 </script>
+
 {% endblock content %}

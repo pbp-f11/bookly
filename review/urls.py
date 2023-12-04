@@ -1,6 +1,5 @@
 from django.urls import path
-from review.views import show_reviews, add_review, get_review_json, add_review_ajax, edit_review, \
-    show_reviews_specific_user, get_review_json_by_user_id
+from review.views import *
 
 app_name = 'review'
 
@@ -11,6 +10,8 @@ urlpatterns = [
     path('add-review/<int:book_id>/', add_review, name='add_review'),
     path('show-reviews-specific-user/', show_reviews_specific_user, name='show_reviews_specific_user'),
     path('get-review-json-by-user-id/', get_review_json_by_user_id, name='get_review_json_by_user_id'),
-    path('edit-review/', edit_review, name='edit_review'),
+    path('show-reviews-specific-user/edit-reviews/<int:book_id>/', edit_reviews, name='edit_reviews'),
+    path('show-reviews-specific-user/delete-item-ajax/<int:review_id>', delete_item_ajax, name='delete_item_ajax'),
+    path('show-reviews-specific-user/delete-item-flutter/', delete_item_flutter, name='delete_item_flutter'),
 
 ]
