@@ -114,3 +114,33 @@ def delete_item_flutter(request):
         product.delete()
         return JsonResponse({"status": True}, status = 200)
     return JsonResponse ({"status": True}, status = 200)
+
+
+@csrf_exempt
+def edit_book(request, book_id):
+    # Temukan buku berdasarkan ID
+    book = Book.objects.get(pk=book_id)
+
+    if request.method == 'POST':
+        # Ambil data yang dikirim dari form
+        name = request.POST.get('name')
+        author = request.POST.get('author')
+        price = request.POST.get('price')
+        year = request.POST.get('year')
+        genre = request.POST.get('genre')
+
+        # Update atribut-atribut buku
+        book.name = name
+        book.author = author
+        book.price = price
+        book.year = year
+        book.genre = genre
+
+        # Simpan perubahan
+        book.save()
+
+        # Kirim respons JSON sebagai konfirmasi
+        response_data = {
+            'message': 'Detail buku berhasil diperbarui.',
+        }
+        return JsonResponse(response_data)
