@@ -107,6 +107,7 @@ def delete_item_ajax(request, review_id):
         return HttpResponse(b"DELETED", status=204)
     return HttpResponseNotFound()
 
+@csrf_exempt
 def delete_item_flutter(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -117,30 +118,21 @@ def delete_item_flutter(request):
 
 
 @csrf_exempt
-def edit_book(request, book_id):
-    # Temukan buku berdasarkan ID
-    book = Book.objects.get(pk=book_id)
+def edit_review_flutter(request):
+    data = json.loads(request.body)
+    print(request.body)
+    review = Review.objects.get(id=data["id"])
 
-    if request.method == 'POST':
-        # Ambil data yang dikirim dari form
-        name = request.POST.get('name')
-        author = request.POST.get('author')
-        price = request.POST.get('price')
-        year = request.POST.get('year')
-        genre = request.POST.get('genre')
+    initial_data = {
+        'rating': review.rating,
+        'pk': review.pk,
+        'review': review.reviews
+    }
 
-        # Update atribut-atribut buku
-        book.name = name
-        book.author = author
-        book.price = price
-        book.year = year
-        book.genre = genre
+    form = ProductForm(data or None, initial=initial_data,instance=review)
 
-        # Simpan perubahan
-        book.save()
 
-        # Kirim respons JSON sebagai konfirmasi
-        response_data = {
-            'message': 'Detail buku berhasil diperbarui.',
-        }
-        return JsonResponse(response_data)
+    if form.is_valid():
+        form.save()
+
+    return JsonResponse({"status": "success"}, status=200)
