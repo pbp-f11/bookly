@@ -13,5 +13,5 @@ urlpatterns = [
     path('show-reviews-specific-user/edit-reviews/<int:book_id>/', edit_reviews, name='edit_reviews'),
     path('show-reviews-specific-user/delete-item-ajax/<int:review_id>', delete_item_ajax, name='delete_item_ajax'),
     path('show-reviews-specific-user/delete-item-flutter/', delete_item_flutter, name='delete_item_flutter'),
-
+    path('show-reviews-specific-user/edit-review-flutter/', edit_review_flutter, name='delete_item_flutter'),
 ]
