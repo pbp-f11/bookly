@@ -1,5 +1,6 @@
 from django.urls import path
 from review.views import *
+from review.views import add_review_flutter
 
 app_name = 'review'
 

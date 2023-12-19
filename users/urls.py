@@ -8,4 +8,6 @@ urlpatterns = [
     path('login/', login_user, name='login'),
     path('logout/', logout_user, name='logout'),
     path('get_user_review/', get_user_review, name='get_user_review'),
+    path('get_user/', get_user_review, name='get_user_review'),
+
 ]

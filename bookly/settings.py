@@ -149,7 +149,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CSRF_TRUSTED_ORIGINS = ['https://bookly-f11-tk.pbp.cs.ui.ac.id']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000']
 
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -158,3 +158,7 @@ CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SAMESITE = 'None'
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:8000",  # Add the address of your Flutter app
+# ]

@@ -49,7 +49,6 @@ def add_review(request, book_id):
     context = {'form': form, 'book': book}
     return render(request, "add_review.html", context)
 
-
 def get_review_json(request, book_id):
     book = Book.objects.get(pk=book_id)
     product_item = Review.objects.filter(book=book)
