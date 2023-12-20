@@ -32,4 +32,7 @@ urlpatterns = [
     path('profile/', user_views.profile, name='profile'),
     path('user-review/', user_views.show_user_review, name='user-review'),
     path('auth/', include('authentication.urls')),
+    path('profile-json/', user_views.show_profile_json, name='profile-json'),
+    path('update-profile/', user_views.update_profile_flutter, name='update-profile'),
+    path('get-user-review/', user_views.get_user_review, name='get-user-review')
 ]
