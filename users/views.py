@@ -1,12 +1,17 @@
+import json
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
-from users.forms import UserUpdateForm, ProfileUpdateForm
+from users.forms import ProfileUpdateForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages 
 from django.contrib.auth.decorators import login_required
 from review.models import Review
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 from django.core import serializers
+from users.models import Profile
+from book.models import Book
+from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
 
 def register(request):
     form = UserCreationForm()
@@ -40,21 +45,18 @@ def logout_user(request):
 
 @login_required(login_url='/login')
 def profile(request):
-    user_form = UserUpdateForm(instance=request.user)
     profile_form = ProfileUpdateForm(instance=request.user.profile)
 
     if request.method == 'POST':
-        user_form = UserUpdateForm(request.POST, instance=request.user)
         profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
+        if profile_form.is_valid():
             profile_form.save()
             messages.success(request, 'Your account has been updated!')
             return redirect('profile')
 
     context = {
-        'user_form': user_form,
+        'username': request.user.username,
         'profile_form': profile_form
     }
     return render(request, 'profile.html', context)
@@ -65,6 +67,32 @@ def get_user_review(request):
 
 def show_user_review(request):
     return render(request, 'user_review.html')
+
+def show_profile_json (request):
+    data = Profile.objects.filter(user = request.user)
+    return HttpResponse(serializers.serialize("json", data))
+
+@csrf_exempt
+def update_profile_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+        profile = Profile.objects.get(user=request.user)
+        
+        profile.email = data["email"]
+        profile.first_name = data["first_name"]
+        profile.last_name = data["last_name"]
+        profile.address = data["address"]
+        profile.phone_number = data["phone_number"]
+        profile.gender = data["gender"]
+        profile.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+
+    else:
+        return JsonResponse({"status": "error"}, status=401)
+
+
 
 
 
