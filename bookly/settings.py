@@ -149,7 +149,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CSRF_TRUSTED_ORIGINS = ['https://bookly-f11-tk.pbp.cs.ui.ac.id/']
+CSRF_TRUSTED_ORIGINS = ['https://bookly-f11-tk.pbp.cs.ui.ac.id']
 
 
 CORS_ALLOW_ALL_ORIGINS = True
