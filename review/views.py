@@ -8,6 +8,9 @@ from book.models import Book
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from users.models import User
+from django.contrib.auth import get_user
+from django.contrib.auth.decorators import login_required
+
 
 
 # Create your views here.
@@ -46,7 +49,6 @@ def add_review(request, book_id):
     context = {'form': form, 'book': book}
     return render(request, "add_review.html", context)
 
-
 def get_review_json(request, book_id):
     book = Book.objects.get(pk=book_id)
     product_item = Review.objects.filter(book=book)
@@ -54,6 +56,7 @@ def get_review_json(request, book_id):
 
 def get_review_json_by_user_id(request):
     # book = Book.objects.get(pk=book_id)
+    print(request.user)
     product_item = Review.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize('json', product_item, use_natural_foreign_keys=True, use_natural_primary_keys=True))
 
@@ -107,6 +110,7 @@ def delete_item_ajax(request, review_id):
         return HttpResponse(b"DELETED", status=204)
     return HttpResponseNotFound()
 
+@csrf_exempt
 def delete_item_flutter(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -114,3 +118,57 @@ def delete_item_flutter(request):
         product.delete()
         return JsonResponse({"status": True}, status = 200)
     return JsonResponse ({"status": True}, status = 200)
+
+
+@csrf_exempt
+def edit_review_flutter(request):
+    data = json.loads(request.body)
+    print(request.body)
+    review = Review.objects.get(id=data["id"])
+
+    initial_data = {
+        'rating': review.rating,
+        'pk': review.pk,
+        'review': review.reviews
+    }
+
+    form = ProductForm(data or None, initial=initial_data,instance=review)
+
+
+    if form.is_valid():
+        form.save()
+
+    return JsonResponse({"status": "success"}, status=200)
+
+
+@csrf_exempt
+def add_review_flutter(request, book_id):
+    print("Reached add_review_flutter view")
+    # user = get_user(request)
+
+
+    if request.method == 'POST':
+        
+        data = json.loads(request.body)
+        print(data)
+        print(request)
+        print(request.headers)
+
+        print("abbcdedef")
+        print(request.user)
+        # user = data.user
+
+
+        new_product = Review.objects.create(
+            user = request.user,
+            book = Book.objects.get(pk=book_id),
+            rating = int(data["rating"]),
+            reviews = data["reviews"]
+        )
+        
+
+        new_product.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)

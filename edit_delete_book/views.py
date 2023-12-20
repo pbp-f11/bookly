@@ -1,6 +1,7 @@
 import json
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponseNotFound, HttpResponseRedirect, JsonResponse
+from django.views.decorators.http import require_http_methods
 from edit_delete_book.forms import BookForm
 from django.urls import reverse
 from book.models import Book
@@ -69,3 +70,43 @@ def edit_book(request, book_id):
             'message': 'Detail buku berhasil diperbarui.',
         }
         return JsonResponse(response_data)
+    
+@csrf_exempt
+def delete_book_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        product = get_object_or_404(Review, pk=data['review_id'])
+        product.delete()
+        return JsonResponse({"status": True}, status = 200)
+    return JsonResponse ({"status": True}, status = 200)
+
+@csrf_exempt
+@require_http_methods(["PUT"])
+def edit_book_flutter(request, book_id):
+    try:
+        book = Book.objects.get(pk=book_id)
+    except Book.DoesNotExist:
+        # Handle the case where the book doesn't exist
+        return JsonResponse({"error": "Book not found"}, status=404)
+
+    if request.method == 'PUT':
+        data = request.body.decode('utf-8')
+        book_data = json.loads(data)
+
+        # Update atribut-atribut buku dengan data yang diterima dari Flutter
+        if 'name' in book_data:
+            book.name = book_data['name']
+        if 'author' in book_data:
+            book.author = book_data['author']
+        if 'price' in book_data:
+            book.price = book_data['price']
+        if 'year' in book_data:
+            book.year = book_data['year']
+
+        # Simpan perubahan
+        book.save()
+
+        # Kirim respons JSON sebagai konfirmasi
+        return JsonResponse({"message": "Book details updated successfully"})
+
+    return JsonResponse({"error": "Invalid request method"}, status=400)
