@@ -21,7 +21,7 @@ Aplikasi web yang ingin kami kembangkan bernama Bookly. Bookly adalah aplikasi y
 3. Add review: Farrel Ayman
 4. Edit/delete review: Raquel Nayyara
 5. Add book: Human al Labib
-6. Edit/delete book: Arju Naja
+6. Edit book: Arju Naja
 
 <table>
   <tr>
